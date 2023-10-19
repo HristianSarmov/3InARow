@@ -3,7 +3,12 @@ package inarow3.game;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.Random;
+
 import javax.swing.*;
+
+import org.w3c.dom.events.MouseEvent;
 
 /*
  * adsfsadf.
@@ -18,7 +23,9 @@ public class InARow3 extends JPanel implements ActionListener {
     private int prevRow = -1; // Initialize to an invalid value
     private int prevCol = -1;
     private GridLayout gridLayout = new GridLayout(rows, cols);
-
+    Random rand = new Random();
+    private int []initialPositionsRow = new int[15];
+    private int []initialPositionsCol = new int[15];
     /*
      * .
      */
@@ -28,6 +35,7 @@ public class InARow3 extends JPanel implements ActionListener {
         imageButtons = new JButton[rows][cols];
 
         // Load a GIF image
+        
         ImageIcon gifIcon1 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-apple.gif");
         ImageIcon gifIcon2 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-banana.gif");
         ImageIcon gifIcon3 = new ImageIcon(
@@ -41,10 +49,18 @@ public class InARow3 extends JPanel implements ActionListener {
             "src\\main\\java\\inarow3\\game\\icons\\gif-pineapple.gif");
         ImageIcon gifIcon10 = new ImageIcon(
             "src\\main\\java\\inarow3\\game\\icons\\gif-strawberry.gif");
-        
+
         int width = 60;
         int height = 60;
         gifIcon4.setImage(gifIcon4.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+
+        int newInitPosition;
+        for (int i = 0; i < 15; i++) {
+            newInitPosition = rand.nextInt(100);
+            initialPositionsRow[i] = newInitPosition / 10;
+            initialPositionsCol[i] = newInitPosition % 10;
+            // System.out.println(initialPositionsRow[i] + " " + initialPositionsCol[i]);
+        }
 
         // Create and add image buttons to the grid with coordinates
         for (int row = 0; row < rows; row++) {
@@ -59,6 +75,10 @@ public class InARow3 extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
+        //    // Perform your action here for left mouse button click
+        //     JOptionPane.showMessageDialog(frame, "Left Mouse Button Clicked!");
+        // }
         int currentRow = -1;
         int currentCol = -1;
         for (int row = 0; row < rows; row++) {
@@ -66,15 +86,20 @@ public class InARow3 extends JPanel implements ActionListener {
                 if (imageButtons[row][col] == e.getSource()) {
                     currentRow = row;
                     currentCol = col;
+                    System.out.println("Click");
                     if (prevRow != -1 && prevCol != -1) {
+                        System.out.println("Second");
                         swapImages(currentRow, currentCol, prevRow, prevCol);
+                        System.out.println(currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
                         prevRow = -1;
                         prevCol = -1;
-                    }
-                    // System.out.println(currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
-                    else {
+                        System.out.println(currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
+                    } else {
+                        System.out.println("First");
+                        System.out.println(currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
                         prevRow = currentRow;
                         prevCol = currentCol;
+                        System.out.println(currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
                     }
                 }
             }
