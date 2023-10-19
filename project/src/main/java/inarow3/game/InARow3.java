@@ -36,19 +36,19 @@ public class InARow3 extends JPanel implements ActionListener {
 
         // Load a GIF image
         
-        ImageIcon gifIcon1 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-apple.gif");
-        ImageIcon gifIcon2 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-banana.gif");
+        ImageIcon gifIcon1 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-apple.gif");
+        ImageIcon gifIcon2 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-banana.gif");
         ImageIcon gifIcon3 = new ImageIcon(
-            "src\\main\\java\\inarow3\\game\\icons\\gif-blueberry.gif");
-        ImageIcon gifIcon4 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-cherry.gif");
-        ImageIcon gifIcon5 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-grapes.gif");
-        ImageIcon gifIcon6 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-kiwi.gif");
-        ImageIcon gifIcon7 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-lemon.gif");
-        ImageIcon gifIcon8 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-orange.gif");
+            "project\\src\\main\\java\\inarow3\\game\\icons\\gif-blueberry.gif");
+        ImageIcon gifIcon4 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-cherry.gif");
+        ImageIcon gifIcon5 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-grapes.gif");
+        ImageIcon gifIcon6 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-kiwi.gif");
+        ImageIcon gifIcon7 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-lemon.gif");
+        ImageIcon gifIcon8 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-orange.gif");
         ImageIcon gifIcon9 = new ImageIcon(
-            "src\\main\\java\\inarow3\\game\\icons\\gif-pineapple.gif");
+            "project\\src\\main\\java\\inarow3\\game\\icons\\gif-pineapple.gif");
         ImageIcon gifIcon10 = new ImageIcon(
-            "src\\main\\java\\inarow3\\game\\icons\\gif-strawberry.gif");
+            "project\\src\\main\\java\\inarow3\\game\\icons\\gif-strawberry.gif");
 
         int width = 60;
         int height = 60;
@@ -62,10 +62,16 @@ public class InARow3 extends JPanel implements ActionListener {
             // System.out.println(initialPositionsRow[i] + " " + initialPositionsCol[i]);
         }
 
+        JButton imageButton = new JButton();
         // Create and add image buttons to the grid with coordinates
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                JButton imageButton = new JButton(gifIcon4);
+                imageButton = new JButton();
+                for (int i = 0; i < 15; i++) {
+                    if (initialPositionsRow[i] == row && initialPositionsCol[i] == col) {
+                        imageButton = new JButton(gifIcon4);
+                    }
+                }
                 this.add(imageButton);
                 imageButtons[row][col] = imageButton;
                 imageButton.addActionListener(this);
