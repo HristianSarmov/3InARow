@@ -134,6 +134,7 @@ public class InARow3 extends JPanel implements ActionListener {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         GameRulesDialog.showGameRulesDialog(frame);
+        //EndGameDialog.showEndGameDialog(frame);  // MAKING END DIALOG VISIBLE
     }
 
     /*
