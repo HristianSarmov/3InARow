@@ -35,9 +35,7 @@ public class InARow3 extends JPanel implements ActionListener {
         imageButtons = new JButton[rows][cols];
 
         // Load a GIF image
-        ImageIcon gifIcon = new ImageIcon(
-            "project\\src\\main\\java\\inarow3\\game\\icons\\pngtree-a-strawberry-image_1144087.jpg"
-        );
+        
         ImageIcon gifIcon1 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-apple.gif");
         ImageIcon gifIcon2 = new ImageIcon("src\\main\\java\\inarow3\\game\\icons\\gif-banana.gif");
         ImageIcon gifIcon3 = new ImageIcon(
@@ -67,13 +65,7 @@ public class InARow3 extends JPanel implements ActionListener {
         // Create and add image buttons to the grid with coordinates
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                JButton imageButton = new JButton();
-                for (int i = 0; i < 15; i++) {
-                    if (initialPositionsRow[i] == row && initialPositionsCol[i] == col) {
-                        imageButton = new JButton(gifIcon4);
-                        break;
-                    }
-                }
+                JButton imageButton = new JButton(gifIcon4);
                 this.add(imageButton);
                 imageButtons[row][col] = imageButton;
                 imageButton.addActionListener(this);
