@@ -63,13 +63,54 @@ public class InARow3 extends JPanel implements ActionListener {
         }
 
         JButton imageButton = new JButton();
+        int image;
         // Create and add image buttons to the grid with coordinates
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 imageButton = new JButton();
                 for (int i = 0; i < 15; i++) {
                     if (initialPositionsRow[i] == row && initialPositionsCol[i] == col) {
-                        imageButton = new JButton(gifIcon4);
+                        image = rand.nextInt(10);
+                        switch (image) {
+                            default: break;
+                            case 0: {
+                                imageButton = new JButton("1", gifIcon1);
+                                break;
+                            }
+                            case 1: {
+                                imageButton = new JButton("2", gifIcon2);
+                                break;
+                            }
+                            case 2: {
+                                imageButton = new JButton("3", gifIcon3);
+                                break;
+                            }
+                            case 3: {
+                                imageButton = new JButton("4", gifIcon4);
+                                break;
+                            }
+                            case 4: {
+                                imageButton = new JButton("5", gifIcon5);
+                                break;
+                            }
+                            case 5: {
+                                imageButton = new JButton("6", gifIcon6);
+                                break;
+                            }
+                            case 6: {
+                                imageButton = new JButton("7", gifIcon7);
+                                break;
+                            }
+                            case 7: {
+                                imageButton = new JButton("8", gifIcon8);
+                                break;
+                            }
+                            case 8: {
+                                imageButton = new JButton("9", gifIcon9);
+                                break;
+                            }
+                            case 9: imageButton = new JButton("10", gifIcon10);
+                        }
                     }
                 }
                 this.add(imageButton);
