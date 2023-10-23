@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Random;
-
 import javax.swing.*;
 
 import org.w3c.dom.events.MouseEvent;
@@ -13,7 +12,6 @@ import org.w3c.dom.events.MouseEvent;
 /*
  * adsfsadf.
  */
-
 public class InARow3 extends JPanel implements ActionListener {
 
     private JFrame frame = new JFrame("3 In a Row");
@@ -36,15 +34,22 @@ public class InARow3 extends JPanel implements ActionListener {
 
         // Load a GIF image
         
-        ImageIcon gifIcon1 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-apple.gif");
-        ImageIcon gifIcon2 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-banana.gif");
+        ImageIcon gifIcon1 = new ImageIcon(
+            "project\\src\\main\\java\\inarow3\\game\\icons\\gif-apple.gif");
+        ImageIcon gifIcon2 = new ImageIcon(
+            "project\\src\\main\\java\\inarow3\\game\\icons\\gif-banana.gif");
         ImageIcon gifIcon3 = new ImageIcon(
             "project\\src\\main\\java\\inarow3\\game\\icons\\gif-blueberry.gif");
-        ImageIcon gifIcon4 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-cherry.gif");
-        ImageIcon gifIcon5 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-grapes.gif");
-        ImageIcon gifIcon6 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-kiwi.gif");
-        ImageIcon gifIcon7 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-lemon.gif");
-        ImageIcon gifIcon8 = new ImageIcon("project\\src\\main\\java\\inarow3\\game\\icons\\gif-orange.gif");
+        ImageIcon gifIcon4 = new ImageIcon(
+            "project\\src\\main\\java\\inarow3\\game\\icons\\gif-cherry.gif");
+        ImageIcon gifIcon5 = new ImageIcon(
+            "project\\src\\main\\java\\inarow3\\game\\icons\\gif-grapes.gif");
+        ImageIcon gifIcon6 = new ImageIcon(
+            "project\\src\\main\\java\\inarow3\\game\\icons\\gif-kiwi.gif");
+        ImageIcon gifIcon7 = new ImageIcon(
+            "project\\src\\main\\java\\inarow3\\game\\icons\\gif-lemon.gif");
+        ImageIcon gifIcon8 = new ImageIcon(
+            "project\\src\\main\\java\\inarow3\\game\\icons\\gif-orange.gif");
         ImageIcon gifIcon9 = new ImageIcon(
             "project\\src\\main\\java\\inarow3\\game\\icons\\gif-pineapple.gif");
         ImageIcon gifIcon10 = new ImageIcon(
@@ -52,7 +57,26 @@ public class InARow3 extends JPanel implements ActionListener {
 
         int width = 60;
         int height = 60;
-        gifIcon4.setImage(gifIcon4.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        gifIcon1.setImage(
+            gifIcon1.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        gifIcon2.setImage(
+            gifIcon2.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        gifIcon3.setImage(
+            gifIcon3.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        gifIcon4.setImage(
+            gifIcon4.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        gifIcon5.setImage(
+            gifIcon5.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        gifIcon6.setImage(
+            gifIcon6.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        gifIcon7.setImage(
+            gifIcon7.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        gifIcon8.setImage(
+            gifIcon8.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        gifIcon9.setImage(
+            gifIcon9.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
+        gifIcon10.setImage(
+            gifIcon10.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
 
         int newInitPosition;
         for (int i = 0; i < 15; i++) {
@@ -68,6 +92,8 @@ public class InARow3 extends JPanel implements ActionListener {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 imageButton = new JButton();
+                imageButton.setBackground(Color.BLACK);
+                imageButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
                 for (int i = 0; i < 15; i++) {
                     if (initialPositionsRow[i] == row && initialPositionsCol[i] == col) {
                         image = rand.nextInt(10);
@@ -75,41 +101,71 @@ public class InARow3 extends JPanel implements ActionListener {
                             default: break;
                             case 0: {
                                 imageButton = new JButton("1", gifIcon1);
+                                imageButton.setBackground(Color.BLACK);
+                                imageButton.setBorder(
+                                    BorderFactory.createLineBorder(Color.WHITE, 2));
                                 break;
                             }
                             case 1: {
                                 imageButton = new JButton("2", gifIcon2);
+                                imageButton.setBackground(Color.BLACK);
+                                imageButton.setBorder(
+                                    BorderFactory.createLineBorder(Color.WHITE, 2));
                                 break;
                             }
                             case 2: {
                                 imageButton = new JButton("3", gifIcon3);
+                                imageButton.setBackground(Color.BLACK);
+                                imageButton.setBorder(
+                                    BorderFactory.createLineBorder(Color.WHITE, 2));
                                 break;
                             }
                             case 3: {
                                 imageButton = new JButton("4", gifIcon4);
+                                imageButton.setBackground(Color.BLACK);
+                                imageButton.setBorder(
+                                    BorderFactory.createLineBorder(Color.WHITE, 2));
                                 break;
                             }
                             case 4: {
                                 imageButton = new JButton("5", gifIcon5);
+                                imageButton.setBackground(Color.BLACK);
+                                imageButton.setBorder(
+                                    BorderFactory.createLineBorder(Color.WHITE, 2));
                                 break;
                             }
                             case 5: {
                                 imageButton = new JButton("6", gifIcon6);
+                                imageButton.setBackground(Color.BLACK);
+                                imageButton.setBorder(
+                                    BorderFactory.createLineBorder(Color.WHITE, 2));
                                 break;
                             }
                             case 6: {
                                 imageButton = new JButton("7", gifIcon7);
+                                imageButton.setBackground(Color.BLACK);
+                                imageButton.setBorder(
+                                    BorderFactory.createLineBorder(Color.WHITE, 2));
                                 break;
                             }
                             case 7: {
                                 imageButton = new JButton("8", gifIcon8);
+                                imageButton.setBackground(Color.BLACK);
+                                imageButton.setBorder(
+                                    BorderFactory.createLineBorder(Color.WHITE, 2));
                                 break;
                             }
                             case 8: {
                                 imageButton = new JButton("9", gifIcon9);
+                                imageButton.setBackground(Color.BLACK);
+                                imageButton.setBorder(
+                                    BorderFactory.createLineBorder(Color.WHITE, 2));
                                 break;
                             }
                             case 9: imageButton = new JButton("10", gifIcon10);
+                                    imageButton.setBackground(Color.BLACK);
+                                    imageButton.setBorder(
+                                        BorderFactory.createLineBorder(Color.WHITE, 2));
                         }
                     }
                 }
@@ -137,16 +193,20 @@ public class InARow3 extends JPanel implements ActionListener {
                     if (prevRow != -1 && prevCol != -1) {
                         System.out.println("Second");
                         swapImages(currentRow, currentCol, prevRow, prevCol);
-                        System.out.println(currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
+                        System.out.println(
+                            currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
                         prevRow = -1;
                         prevCol = -1;
-                        System.out.println(currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
+                        System.out.println(
+                            currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
                     } else {
                         System.out.println("First");
-                        System.out.println(currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
+                        System.out.println(
+                            currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
                         prevRow = currentRow;
                         prevCol = currentCol;
-                        System.out.println(currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
+                        System.out.println(
+                            currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
                     }
                 }
             }
@@ -180,8 +240,8 @@ public class InARow3 extends JPanel implements ActionListener {
         frame.setSize(500, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        GameRulesDialog.showGameRulesDialog(frame);
-        //EndGameDialog.showEndGameDialog(frame);  // MAKING END DIALOG VISIBLE
+        // GameRulesDialog.showGameRulesDialog(frame);
+        EndGameDialog.showEndGameDialog(frame);  // MAKING END DIALOG VISIBLE
     }
 
     /*
