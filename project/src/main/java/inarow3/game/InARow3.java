@@ -3,14 +3,16 @@ package inarow3.game;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.Random;
 import javax.swing.*;
 
-import org.w3c.dom.events.MouseEvent;
-
-/*
- * adsfsadf.
+/**.
+ * @author Fleur Petit
+ * @id     1640194
+ * @author Hristian Sarmov
+ * @id     1924087
+ * @data   29-10-2023
+ * 
  */
 public class InARow3 extends JPanel implements ActionListener {
 
@@ -30,6 +32,8 @@ public class InARow3 extends JPanel implements ActionListener {
     private int[] toBeAddedCols = new int[2];
     private int[] toBeRemovedRow = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
     private int[] toBeRemovedCol = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+    private Timer imageTimer;
+
     private ImageIcon gifIcon1 = new ImageIcon(
             "project\\src\\main\\java\\inarow3\\game\\icons\\gif-apple.gif");
     private ImageIcon gifIcon2 = new ImageIcon(
@@ -50,6 +54,10 @@ public class InARow3 extends JPanel implements ActionListener {
             "project\\src\\main\\java\\inarow3\\game\\icons\\gif-pineapple.gif");
     private ImageIcon gifIcon10 = new ImageIcon(
             "project\\src\\main\\java\\inarow3\\game\\icons\\gif-strawberry.gif");
+    
+    /**
+     * .
+     */
     void editImages() {
         int width = 60;
         int height = 60;
@@ -75,7 +83,7 @@ public class InARow3 extends JPanel implements ActionListener {
             gifIcon10.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
     }
         
-    /*
+    /**
      * .
      */
     public InARow3() {
@@ -97,6 +105,9 @@ public class InARow3 extends JPanel implements ActionListener {
         createButtons(initialPositionsRow, initialPositionsCol, true);
     }
 
+    /**
+     * .
+     */
     public void createButtons(int[] toBeCreatedRow, int[] toBeCreatedCol, boolean initial) {
         // System.out.println("CALL");
         JButton imageButton = new JButton();
@@ -204,6 +215,9 @@ public class InARow3 extends JPanel implements ActionListener {
         // System.out.println(e.getSource().toString());
     }
 
+    /**
+     * .
+     */
     public void swapImages(int row1, int col1, int row2, int col2) {
         JButton swap = imageButtons[row1][col1];
         imageButtons[row1][col1] = imageButtons[row2][col2];
@@ -216,19 +230,24 @@ public class InARow3 extends JPanel implements ActionListener {
         // System.out.println(row1 + " " + col1 + " " + row2 + " " + col2);
     }
 
+    /**
+     * .
+     */
     public void computerMove() {
         int newImage; 
         for (int i = 0; i < 2; i++) {
             do {
                 newImage = rand.nextInt(100);
-            }
-            while (takenPositions[newImage]);
+            } while (takenPositions[newImage]);
             toBeAddedRows[i] = newImage / 10;
             toBeAddedCols[i] = newImage % 10;
         }
         createButtons(toBeAddedRows, toBeAddedCols, false);
     }
 
+    /**
+     * .
+     */
     public void checkXaxis() {
         String lastImage = "";
         int count = 0;
@@ -236,7 +255,8 @@ public class InARow3 extends JPanel implements ActionListener {
         // int toBeRemoved;
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                // System.out.println(lastImage + " " + imageButtons[j][i].getText() + " " + j + " " + i + " called");
+                // System.out.println(lastImage + " " 
+                // + imageButtons[j][i].getText() + " " + j + " " + i + " called");
                 if (!lastImage.equals("")) {
                     if (lastImage.equals(imageButtons[j][i].getText())) {
                         count++;
@@ -284,22 +304,21 @@ public class InARow3 extends JPanel implements ActionListener {
             lastImage = "";
             count = 1;     
         }
-        
-        
         // return toBeRemoved;
     }
 
+    /**
+     *.
+     */
     public void checkYaxis() {
         String lastImage = "";
         int count = 0;
         
         // int toBeRemoved;
         for (int i = 0; i < 10; i++) {
-            
             for (int j = 0; j < 10; j++) {
-                
-                        
-                // System.out.println(lastImage + " " + imageButtons[j][i].getText() + " " + j + " " + i + " called");
+                // System.out.println(lastImage + " " 
+                // + imageButtons[j][i].getText() + " " + j + " " + i + " called");
                 if (!lastImage.equals("")) {
                     if (lastImage.equals(imageButtons[i][j].getText())) {
                         count++;
@@ -309,9 +328,7 @@ public class InARow3 extends JPanel implements ActionListener {
                             for (int t = j - 1; t >= j - count; t--) {
                                 toBeRemovedRow[t] = i;
                                 toBeRemovedCol[t] = t;
-                                
                             }
-                            
                             removeButtons(toBeRemovedRow, toBeRemovedCol);
                             for (int t = 0; t < 10; t++) {
                                 toBeRemovedRow[t] = -1;
@@ -351,13 +368,29 @@ public class InARow3 extends JPanel implements ActionListener {
             lastImage = "";
             count = 1;     
         }
-        
-        
         // return toBeRemoved;
     }
 
+    /**
+     * .
+     */
     public void removeButtons(int[] toBeRemovedRow, int[] toBeRemovedCol) {
         JButton imageButton = new JButton();
+
+        FreedomDialog.showFreedomDialog(frame);
+
+        imageTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Hide the image after 1 second
+
+                imageTimer.stop();
+            }
+        });
+
+        imageTimer.setRepeats(false);
+        imageTimer.start();
+
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 imageButton = new JButton();
@@ -365,6 +398,7 @@ public class InARow3 extends JPanel implements ActionListener {
                 imageButton.setForeground(Color.BLACK);
                 imageButton.setBorder(
                     BorderFactory.createLineBorder(Color.WHITE, 2));
+
                 for (int i = 0; i < toBeRemovedRow.length; i++) {
                     if (toBeRemovedRow[i] == row && toBeRemovedCol[i] == col) {
                         imageButtons[row][col] = imageButton;
@@ -381,8 +415,12 @@ public class InARow3 extends JPanel implements ActionListener {
     //     return toBeRemoved;
     // } 
 
+    /**
+     *.
+     */
     public void refreshUI() {
         this.removeAll();
+
         System.out.println("NEW UI");
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
@@ -396,6 +434,9 @@ public class InARow3 extends JPanel implements ActionListener {
         this.repaint();
     }
 
+    /**
+     *.
+     */
     public void start() {
         JPanel grid = new InARow3();
         frame.add(grid);
@@ -403,15 +444,11 @@ public class InARow3 extends JPanel implements ActionListener {
         frame.setSize(500, 500);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        // GameRulesDialog.showGameRulesDialog(frame);
-        EndGameDialog.showEndGameDialog(frame);  // MAKING END DIALOG VISIBLE
+        StartGameDialog.showStartGameDialog(frame);
+        EndGameDialog.showEndGameDialog(frame);
     }
 
-    /*
-     * .
-     */
     public static void main(String[] args) {
         new InARow3().start();
-    }
-    
+    }   
 }
