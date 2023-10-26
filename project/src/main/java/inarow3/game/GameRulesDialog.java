@@ -2,35 +2,55 @@ package inarow3.game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Scrollbar;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
-/**
-* In this class the game rules dialog is created, which is the first screen you see when opening
-* the game. The rest of the game will not start until the start button on this screen is pressed.
+/**.
+ * @author Fleur Petit
+ * @id     1640194
+ * @author Hristian Sarmov
+ * @id     1924087
+ * @data   29-10-2023
+* 
+*      In this class the game rules dialog is created, which is the first screen you see when 
+*      opening the game. The rest of the game will not start until the start button on this 
+*      screen is pressed.
 */
 public class GameRulesDialog {
 
     /**
-     * Create the game rules dialog, which is a pop-up screen that provides a short 
-     * explanation of how the game works. When the button on the bottom of the screen is pressed
-     * the game starts. The fruits are added to the playingfield after this.
+     * asd.
      */
-    static JDialog showGameRulesDialog(JFrame frame) {
-        // Button to start the game.
+    static JDialog showGameRulesDialog(final JFrame frame) {
+
+        final JDialog gameRulesDialog = new JDialog(frame, "Game Rules");
+
+        // Button to start the game, the button opens the game level dialog
         JButton startButton = new JButton("Start Game");
         startButton.setBackground(Color.WHITE);
         startButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
         startButton.setBorderPainted(true);
-        // TOdo startButton.addActionListener();
-
-        JDialog gameRulesDialog = new JDialog(frame, "Game Rules");
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent f) { 
+                GameLevelDialog.showGameLevelDialog(frame);
+                gameRulesDialog.dispose();
+            }
+        });
         
         // Game rules, explanation of the game.
-        String labelText = "When clicking on two tiles these tiles will change position. "
-            + "When you possition three of the same fruit in a row, these fruits will disappear. "
-            + "After every 3 moves, 3 extra fruits will be randomly added to the game. "
-            + "The goal is to keep the game going as long as possible. "
-            + "Once no more fruits can be added, you are game over. Are you ready to play?!";
+        String labelText = " The fruits are trapped in a block and can only be freed by "
+            + " placing three of the same fruit in a row. This can be done switching tiles "
+            + " by clicking on them. When clicking on two tiles these tiles will change "
+            + " position. When three of the same fruit are in a row, these fruits are free "
+            + " and will disappear from the board. After every 3 moves, 3 extra fruits will "
+            + " be randomly added to the game. The goal is to save as many fruits as possible "
+            + " before the board is completely filled. "
+            + " Once no more fruits can be added, you are game over. Are you ready to play?!";
 
         // Explanation of the game set to a label.
         JLabel labelRules = new JLabel("<html>" + labelText + "</html>");
@@ -40,14 +60,12 @@ public class GameRulesDialog {
         labelRules.setBackground(Color.BLACK);
         labelRules.setForeground(Color.WHITE);
 
-        // Add the label with the game rules and the start button to the dialog, with the button
-        // positioned at the bottom and the text above the button.
         gameRulesDialog.add(labelRules, BorderLayout.CENTER);
         gameRulesDialog.add(startButton, BorderLayout.SOUTH);
 
-        // Set the size of the dialog and adding it to the main frame
+        // Set the size of the dialog and add it to the main frame
         gameRulesDialog.setVisible(true);
-        gameRulesDialog.setSize(225, 225);
+        gameRulesDialog.setSize(265, 265);
         gameRulesDialog.setLocationRelativeTo(frame);
         return gameRulesDialog;
     }
