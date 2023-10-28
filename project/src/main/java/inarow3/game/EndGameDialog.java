@@ -2,6 +2,9 @@ package inarow3.game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**.
@@ -18,18 +21,36 @@ public class EndGameDialog {
     String highscore = "";
 
     /**
-     * jkd.
+     * Create the end game dialog, which is a pop-up screen, showing the score of your last game and
+     * your highscore. And two buttons to either restart or exit the game. 
      */
-    static JDialog showEndGameDialog(JFrame frame) {
-        String highscore = "6";
+    static JDialog showEndGameDialog(final JFrame frame) {
 
-        JDialog endGameDialog = new JDialog(frame, "Game Over");
+        final JDialog endGameDialog = new JDialog(frame, "Game Over");
 
-        JButton replayButton = new JButton("Replay");
-        // replayButton.addActionListener();   IMPORTANT TO ADD
+        // Button to start the game again.
+        JButton replayButton = new JButton(" Replay ");
+        replayButton.setBackground(Color.WHITE);
+        replayButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        replayButton.setBorderPainted(true);
+        replayButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { 
+                endGameDialog.dispose();
+            }
+        });
 
-        JButton quitButton = new JButton("Quit Game");
-        // quitButton.addActionListener();  IMPORTANT TO ADD
+        // Button to quit the game.
+        JButton quitButton = new JButton(" Quit Game ");
+        quitButton.setBackground(Color.WHITE);
+        quitButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+        quitButton.setBorderPainted(true);
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { 
+                frame.dispose();
+            }
+        });
 
         // Icon of a crying pineapple, shown when you are game over.
         ImageIcon gifCryingPineapple = new ImageIcon(
@@ -41,15 +62,30 @@ public class EndGameDialog {
         JPanel panelButtons = new JPanel();
         panelButtons.add(replayButton);
         panelButtons.add(quitButton);
+
+        String score = "5";
+        String highscore = "6";
         
+        // Create labels for the four different elements shown in the top panel;
+        // game over message, previously created icon, current score, highscore.
         JLabel labelGameOver = new JLabel("too bad, you are game over");
+        labelGameOver.setForeground(Color.WHITE);
+        JLabel labelGif = new JLabel(" ");
+        labelGif.setIcon(gifCryingPineapple);
+        JLabel labelCurrentScore = new JLabel("you have saved " + score + " fruits this round!");
+        labelCurrentScore.setForeground(Color.WHITE);
         JLabel labelHighScore = new JLabel("your high score is: " + highscore);
+        labelHighScore.setForeground(Color.WHITE);
 
+        // Add labels to a panels.
         JPanel panelGameOver = new JPanel();
-        panelGameOver.add(labelGameOver, BorderLayout.NORTH);
-        panelGameOver.add(labelHighScore, BorderLayout.SOUTH);
-        panelGameOver.setBackground(Color.GREEN);
+        panelGameOver.add(labelGameOver);
+        panelGameOver.add(labelGif);
+        panelGameOver.add(labelCurrentScore);
+        panelGameOver.add(labelHighScore);
+        panelGameOver.setBackground(Color.BLACK);
 
+        // Add both panels to the dialog.
         endGameDialog.add(panelGameOver, BorderLayout.CENTER);
         endGameDialog.add(panelButtons, BorderLayout.SOUTH);
 

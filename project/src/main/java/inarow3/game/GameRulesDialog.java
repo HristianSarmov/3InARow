@@ -2,9 +2,6 @@ package inarow3.game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Image;
-import java.awt.Scrollbar;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
