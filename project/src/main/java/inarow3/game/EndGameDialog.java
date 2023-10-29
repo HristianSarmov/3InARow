@@ -6,14 +6,13 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
-
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 /**.
  * @author Fleur Petit
@@ -87,7 +86,7 @@ public class EndGameDialog {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { 
-                frame.dispose();
+                System.exit(0);
             }
         });
 
@@ -112,7 +111,7 @@ public class EndGameDialog {
 
         // Create labels for the four different elements shown in the top panel;
         // game over message, previously created icon, current score, highscore.
-        JLabel labelGameOver = new JLabel("too bad, you are game over");
+        JLabel labelGameOver = new JLabel("        Game over         ");
         labelGameOver.setForeground(Color.WHITE);
         JLabel labelGif = new JLabel(" ");
         labelGif.setIcon(gifCryingPineapple);
@@ -133,7 +132,18 @@ public class EndGameDialog {
         endGameDialog.add(panelGameOver, BorderLayout.CENTER);
         endGameDialog.add(panelButtons, BorderLayout.SOUTH);
 
+        // A new panel is created to add a write border around the dialog.
+        JPanel borderEGPanel = new JPanel(new BorderLayout());
+        borderEGPanel.setBorder(new EmptyBorder(3, 3, 3, 3));
+        borderEGPanel.setBackground(Color.WHITE);
+
+        // Add both panels to the dialog.
+        borderEGPanel.add(panelGameOver, BorderLayout.CENTER);
+        borderEGPanel.add(panelButtons, BorderLayout.SOUTH);
+
+        endGameDialog.add(borderEGPanel, BorderLayout.CENTER);
         // Set the size of the dialog and add it to the main frame.
+        endGameDialog.setUndecorated(true);
         endGameDialog.setSize(265, 265);
         endGameDialog.setLocationRelativeTo(frame);
         endGameDialog.setModal(true);

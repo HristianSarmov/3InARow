@@ -3,10 +3,7 @@ package inarow3.game;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.Random;
-
 import javax.swing.*;
 
 /**.
@@ -24,9 +21,10 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
     private int rows = 10; // Number of rows in the grid
     private int cols = 10; // Number of columns in the grid
     private int prevRow = -1; // Initialize to an invalid value
-    private int prevCol = -1;
-    private int moveAmount = 0;
-    public static int score = 0;
+    private int prevCol = -1; // Initialize to an invalid value
+    private int moveAmount = 0; // Initialize at the start of the game
+    public static int score = 0; // Initialize to an invalid value
+    private int takenPositionsCount = 0; // Initialize to an invalid value
     private GridLayout gridLayout = new GridLayout(rows, cols);
     Random rand = new Random();
     private int []initialPositionsRow = new int[15];
@@ -60,7 +58,7 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
             "project\\src\\main\\java\\inarow3\\game\\icons\\gif-strawberry.gif");
     
     /**
-     * .
+     * Scale images down to the buttons' size. 
      */
     void editImages() {
         int width = 60;
@@ -88,7 +86,7 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
     }
         
     /**
-     * .
+     * Constructor that creates the layout and images.
      */
     public InARow3() {
 
@@ -100,9 +98,9 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
         for (int i = 0; i < 15; i++) {
             newInitPosition = rand.nextInt(100);
             takenPositions[newInitPosition] = true;
+            takenPositionsCount++;
             initialPositionsRow[i] = newInitPosition / 10;
             initialPositionsCol[i] = newInitPosition % 10;
-            // System.out.println(initialPositionsRow[i] + " " + initialPositionsCol[i]);
         }
 
         editImages();
@@ -110,10 +108,9 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
     }
 
     /**
-     * .
+     * Always called at the start of the game and when the computer makes a move.
      */
     public void createButtons(int[] toBeCreatedRow, int[] toBeCreatedCol, boolean initial) {
-        // System.out.println("CALL");
         JButton imageButton = new JButton();
         int image;
         // Create and add image buttons to the grid with coordinates
@@ -180,86 +177,108 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
             }
         }
     }
- 
+    
+    /*
+     * Called on button clicked 
+     * If called for the first time saves the clicked button
+     * If called for the second time swaps the current with the previous button
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        // if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
-        //    // Perform your action here for left mouse button click
-        //     JOptionPane.showMessageDialog(frame, "Left Mouse Button Clicked!");
-        // }
         int currentRow = -1;
         int currentCol = -1;
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 if (imageButtons[row][col] == e.getSource()) {
-                    currentRow = row;
-                    currentCol = col;
-                    // System.out.println("Click");
-                    if (prevRow != -1 && prevCol != -1) {
-                        // System.out.println("Second");
-                        swapImages(currentRow, currentCol, prevRow, prevCol);
-                        // System.out.println(
-                        //    currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
-                        prevRow = -1;
-                        prevCol = -1;
-                        // System.out.println(
-                        //    currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
-                    } else {
-                        // System.out.println("First");
-                        // System.out.println(
-                        //     currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
-                        prevRow = currentRow;
-                        prevCol = currentCol;
-                        //System.out.println(
-                        //    currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
+                    if ((prevRow != -1 && prevCol != -1) 
+                        || !imageButtons[row][col].getText().equals("")) {
+                        currentRow = row;
+                        currentCol = col;
+                        // System.out.println("Click");
+                        if (prevRow != -1 && prevCol != -1) {
+                            // System.out.println("Second");
+                            swapImages(currentRow, currentCol, prevRow, prevCol);
+                            // System.out.println(
+                            //    currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
+                            prevRow = -1;
+                            prevCol = -1;
+                            // System.out.println(
+                            //    currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
+                        } else {
+                            // System.out.println("First");
+                            // System.out.println(
+                            //     currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
+                            prevRow = currentRow;
+                            prevCol = currentCol;
+                            imageButtons[prevRow][prevCol].setBorder(
+                                BorderFactory.createLineBorder(Color.BLUE, 3));
+                            //System.out.println(
+                            //    currentRow + " " + currentCol + " " + prevRow + " " + prevCol);
+                        }
                     }
+                    
                 }
             }
         }
-        // System.out.println(e.getSource().toString());
     }
 
     /**
-     * .
+     * Swaps the state of two chosen buttons.
      */
     public void swapImages(int row1, int col1, int row2, int col2) {
+        imageButtons[row2][col2].setBorder(
+            BorderFactory.createLineBorder(Color.WHITE, 2));
         JButton swap = imageButtons[row1][col1];
+        if (imageButtons[row1][col1].getText().equals("") 
+            && !imageButtons[row2][col2].getText().equals("")) {
+            takenPositions[row1 * 10 + col1] = true;
+            takenPositions[row2 * 10 + col2] = false;
+        } else if (!imageButtons[row1][col1].getText().equals("") 
+                   && imageButtons[row2][col2].getText().equals("")) {
+            takenPositions[row1 * 10 + col1] = false;
+            takenPositions[row2 * 10 + col2] = true;
+        }
         imageButtons[row1][col1] = imageButtons[row2][col2];
         imageButtons[row2][col2] = swap;
         computerMove();
-        boolean isFull = true;
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (imageButtons[i][j].getText().equals("")) {
-                    isFull = false;
-                    break;
-                }
-            }
-            if (!isFull) {
-                break;
-            }
-        }
-        if (isFull) {
-            EndGameDialog.showEndGameDialog(frame, String.valueOf(score));
-        }
+        checkEnd();
         checkXaxis();
         checkYaxis();
         refreshUI();
-
-        // System.out.println(row1 + " " + col1 + " " + row2 + " " + col2);
     }
-
+    /*
+     * Checks for game over conditions. 
+     */
+    public void checkEnd() {
+        int filled = 0;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (!imageButtons[i][j].getText().equals("")) {
+                    filled++;
+                }
+            }
+        }
+        if (filled >= 98) {
+            EndGameDialog.showEndGameDialog(frame, String.valueOf(score));
+        }
+    }
     /**
-     * .
+     * The computer spawns fruit scaling with the difficulty and move count.
      */
     public void computerMove() {
         int newImage; 
         for (int i = 0; i < moveAmount; i++) {
-            do {
-                newImage = rand.nextInt(100);
-            } while (takenPositions[newImage]);
-            toBeAddedRows[i] = newImage / 10;
-            toBeAddedCols[i] = newImage % 10;
+            if (takenPositionsCount < 100) {
+                do {
+                    newImage = rand.nextInt(100);
+                } while (takenPositions[newImage]);
+                toBeAddedRows[i] = newImage / 10;
+                toBeAddedCols[i] = newImage % 10;
+                takenPositions[newImage] = true;
+                takenPositionsCount++;
+            } else {
+                break;
+            }
         }
         if (GameLevelDialog.difficulty == "easy") {
             moveAmount++;
@@ -272,17 +291,13 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
     }
 
     /**
-     * .
+     * Checks for combinations of fruit ready to be removed.
      */
     public void checkXaxis() {
         String lastImage = "";
         int count = 0;
-        
-        // int toBeRemoved;
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                // System.out.println(lastImage + " " 
-                // + imageButtons[j][i].getText() + " " + j + " " + i + " called");
                 if (!lastImage.equals("")) {
                     if (lastImage.equals(imageButtons[j][i].getText())) {
                         count++;
@@ -298,6 +313,7 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
                                 toBeRemovedCol[t] = -1;
                             }
                             score += count;
+                            takenPositionsCount -= count;
                             count = 0;
                         }
                         
@@ -327,30 +343,25 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
                     toBeRemovedCol[t] = -1;
                 }
                 score += count;
+                takenPositionsCount -= count;
                 count = 0;
             }
             lastImage = "";
             count = 1;     
         }
-        // return toBeRemoved;
     }
 
     /**
-     *.
+     * Checks for combinations of fruit ready to be removed.
      */
     public void checkYaxis() {
         String lastImage = "";
         int count = 0;
-        
-        // int toBeRemoved;
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                // System.out.println(lastImage + " " 
-                // + imageButtons[j][i].getText() + " " + j + " " + i + " called");
                 if (!lastImage.equals("")) {
                     if (lastImage.equals(imageButtons[i][j].getText())) {
                         count++;
-                        System.out.println(count);
                     } else {
                         if (count >= 3) {
                             for (int t = j - 1; t >= j - count; t--) {
@@ -362,8 +373,9 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
                                 toBeRemovedRow[t] = -1;
                                 toBeRemovedCol[t] = -1;
                             }
+                            score += count;
+                            takenPositionsCount -= count;
                             count = 0;
-                            
                         }
                         
                         if (!imageButtons[i][j].getText().equals("")) {
@@ -391,16 +403,17 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
                     toBeRemovedRow[t] = -1;
                     toBeRemovedCol[t] = -1;
                 }
+                score += count;
+                takenPositionsCount -= count;
                 count = 0;
             }
             lastImage = "";
             count = 1;     
         }
-        // return toBeRemoved;
     }
 
     /**
-     * .
+     * Removes the given buttons whenever the conditions are met.
      */
     public void removeButtons(int[] toBeRemovedRow, int[] toBeRemovedCol) {
         JButton imageButton = new JButton();
@@ -428,6 +441,7 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
                 for (int i = 0; i < toBeRemovedRow.length; i++) {
                     if (toBeRemovedRow[i] == row && toBeRemovedCol[i] == col) {
                         imageButtons[row][col] = imageButton;
+                        takenPositions[row * 10 + col] = false;
                         imageButtons[row][col].addActionListener(this);
                     }
                 }
@@ -436,17 +450,12 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
     } 
 
     /**
-     *.
+     * Refreshes the grid whenever new fruit are added or freed.
      */
     public void refreshUI() {
         this.removeAll();
-
-        // System.out.println("NEW UI");
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                // if (!imageButtons[row][col].getText().equals("")) {
-                //     System.out.println(row + " " + col + " " + imageButtons[row][col].getText());
-                // }
                 this.add(imageButtons[row][col]);
             }
         }
@@ -455,7 +464,7 @@ public class InARow3 extends JPanel implements ActionListener, FruitRemovalRuele
     }
 
     /**
-     *.
+     * Called at the start of the program. Creates the grid and starts the game.
      */
     public void start() {
         JPanel grid = new InARow3();

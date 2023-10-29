@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 /**.
  * @author Fleur Petit
@@ -34,20 +35,20 @@ public class GameRulesDialog {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent f) { 
-                GameLevelDialog.showGameLevelDialog(frame);
                 gameRulesDialog.dispose();
+                GameLevelDialog.showGameLevelDialog(frame);
             }
         });
         
         // Game rules, explanation of the game.
         String labelText = " The fruits are trapped in a block and can only be freed by "
-            + " placing three of the same fruit in a row. This can be done switching tiles "
-            + " by clicking on them. When clicking on two tiles these tiles will change "
+            + " placing three of the same fruit in a row. This can be done by changing the "
+            + " position of the fruits. When clicking on two fruits, or a fruit and an empty "
+            + " tile, these tiles will change "
             + " position. When three of the same fruit are in a row, these fruits are free "
-            + " and will disappear from the board. After every 3 moves, 3 extra fruits will "
-            + " be randomly added to the game. The goal is to save as many fruits as possible "
-            + " before the board is completely filled. "
-            + " Once no more fruits can be added, you are game over. Are you ready to play?!";
+            + " and will disappear from the board. After every move, extra fruits will "
+            + " be randomly added to the game. The goal is to save as many fruits as possible, "
+            + " before the board is completely filled. Are you ready to play?!";
 
         // Explanation of the game set to a label.
         JLabel labelRules = new JLabel("<html>" + labelText + "</html>");
@@ -59,9 +60,18 @@ public class GameRulesDialog {
 
         gameRulesDialog.add(labelRules, BorderLayout.CENTER);
         gameRulesDialog.add(startButton, BorderLayout.SOUTH);
-
-        // Set the size of the dialog and add it to the main frame
         
+        // A new panel is created to add a write border around the dialog.
+        JPanel borderGRPanel = new JPanel(new BorderLayout());
+        borderGRPanel.setBorder(new EmptyBorder(3, 3, 3, 3));
+        borderGRPanel.setBackground(Color.WHITE);
+
+        borderGRPanel.add(labelRules, BorderLayout.CENTER);
+        borderGRPanel.add(startButton, BorderLayout.SOUTH);
+
+        gameRulesDialog.add(borderGRPanel, BorderLayout.CENTER);
+        // Set the size of the dialog and add it to the main frame
+        gameRulesDialog.setUndecorated(true);
         gameRulesDialog.setSize(265, 265);
         gameRulesDialog.setLocationRelativeTo(frame);
         gameRulesDialog.setModal(true);

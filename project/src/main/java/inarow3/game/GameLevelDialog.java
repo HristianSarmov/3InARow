@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 /**.
  * @author Fleur Petit
@@ -86,7 +87,18 @@ public class GameLevelDialog {
         gameLevelDialog.add(panelLevels);
         gameLevelDialog.add(panelButtons, BorderLayout.SOUTH);
 
+        // A new panel is created to add a write border around the dialog.
+        JPanel borderGLPanel = new JPanel(new BorderLayout());
+        borderGLPanel.setBorder(new EmptyBorder(3, 3, 3, 3));
+        borderGLPanel.setBackground(Color.WHITE);
+
+        borderGLPanel.add(panelLevels);
+        borderGLPanel.add(panelButtons, BorderLayout.SOUTH);
+
+        gameLevelDialog.add(borderGLPanel, BorderLayout.CENTER);
+
         // Set the size of the dialog and add it to the main frame.
+        gameLevelDialog.setUndecorated(true);
         gameLevelDialog.setSize(265, 100);
         gameLevelDialog.setLocationRelativeTo(frame);
         gameLevelDialog.setModal(true);
