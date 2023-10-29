@@ -5,6 +5,14 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Properties;
+
 import javax.swing.*;
 
 /**.
@@ -18,15 +26,45 @@ import javax.swing.*;
  *     when the game is over. You can then choose to play the game again or quit the game.
  */
 public class EndGameDialog {
-    String highscore = "";
+    private static final String HIGH_SCORES_FILE = "project\\src\\resources\\highscore.properties";
+    private static Properties highScores;
+
+    public static int getHighScore(String level) {
+        String scoreStr = highScores.getProperty(level);
+        if (scoreStr != null) {
+            return Integer.parseInt(scoreStr);
+        }
+        return 0;
+    }
+
+    public static void setHighScore(String level, int score) {
+        highScores.setProperty(level, String.valueOf(score));
+    }
+
+    public static void saveHighScores() {
+        try (OutputStream outputStream = new FileOutputStream(HIGH_SCORES_FILE)) {
+            highScores.store(outputStream, "High Scores");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Create the end game dialog, which is a pop-up screen, showing the score of your last game and
      * your highscore. And two buttons to either restart or exit the game. 
      */
-    static JDialog showEndGameDialog(final JFrame frame) {
+    static JDialog showEndGameDialog(final JFrame frame, String score) {
 
         final JDialog endGameDialog = new JDialog(frame, "Game Over");
+
+        highScores = new Properties();
+
+        // Load high scores from the file
+        try (InputStream inputStream = new FileInputStream(HIGH_SCORES_FILE)) {
+            highScores.load(inputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Button to start the game again.
         JButton replayButton = new JButton(" Replay ");
@@ -36,7 +74,8 @@ public class EndGameDialog {
         replayButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { 
-                endGameDialog.dispose();
+                frame.dispose();
+                InARow3.main(null);
             }
         });
 
@@ -62,10 +101,15 @@ public class EndGameDialog {
         JPanel panelButtons = new JPanel();
         panelButtons.add(replayButton);
         panelButtons.add(quitButton);
-
-        String score = "5";
-        String highscore = "6";
         
+        String difficulty = GameLevelDialog.difficulty;
+        String highscore = String.valueOf(getHighScore(difficulty.toLowerCase()));
+        if (Integer.parseInt(highscore) < InARow3.score) {
+            highscore = String.valueOf(InARow3.score);
+            setHighScore(difficulty, Integer.parseInt(highscore));
+            saveHighScores();
+        }
+
         // Create labels for the four different elements shown in the top panel;
         // game over message, previously created icon, current score, highscore.
         JLabel labelGameOver = new JLabel("too bad, you are game over");
@@ -90,9 +134,10 @@ public class EndGameDialog {
         endGameDialog.add(panelButtons, BorderLayout.SOUTH);
 
         // Set the size of the dialog and add it to the main frame.
-        endGameDialog.setVisible(true);
         endGameDialog.setSize(265, 265);
         endGameDialog.setLocationRelativeTo(frame);
+        endGameDialog.setModal(true);
+        endGameDialog.setVisible(true);
         return endGameDialog;
     } 
 }
