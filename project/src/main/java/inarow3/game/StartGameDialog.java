@@ -63,9 +63,11 @@ public class StartGameDialog {
         startGameDialog.add(startGameButton, BorderLayout.SOUTH);
 
         // Set the size of the dialog and add it to the main frame.
-        startGameDialog.setVisible(true);
         startGameDialog.setSize(265, 265);
         startGameDialog.setLocationRelativeTo(frame);
+        startGameDialog.setModal(true);
+        startGameDialog.setVisible(true);
+        
         return startGameDialog;
     }
 }

@@ -61,9 +61,11 @@ public class GameRulesDialog {
         gameRulesDialog.add(startButton, BorderLayout.SOUTH);
 
         // Set the size of the dialog and add it to the main frame
-        gameRulesDialog.setVisible(true);
+        
         gameRulesDialog.setSize(265, 265);
         gameRulesDialog.setLocationRelativeTo(frame);
+        gameRulesDialog.setModal(true);
+        gameRulesDialog.setVisible(true);
         return gameRulesDialog;
     }
 }

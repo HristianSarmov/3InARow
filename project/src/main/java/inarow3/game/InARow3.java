@@ -3,7 +3,10 @@ package inarow3.game;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Random;
+
 import javax.swing.*;
 
 /**.
@@ -14,22 +17,23 @@ import javax.swing.*;
  * @data   29-10-2023
  * 
  */
-public class InARow3 extends JPanel implements ActionListener {
+public class InARow3 extends JPanel implements ActionListener, FruitRemovalRueles {
 
-    private JFrame frame = new JFrame("3 In a Row");
+    public JFrame frame = new JFrame("3 In a Row");
     private JButton[][] imageButtons;
     private int rows = 10; // Number of rows in the grid
     private int cols = 10; // Number of columns in the grid
     private int prevRow = -1; // Initialize to an invalid value
     private int prevCol = -1;
+    private int moveAmount = 0;
+    public static int score = 0;
     private GridLayout gridLayout = new GridLayout(rows, cols);
     Random rand = new Random();
     private int []initialPositionsRow = new int[15];
     private int []initialPositionsCol = new int[15];
     private boolean[] takenPositions = new boolean[100];
-    private int[] toBeAdded = new int[2];
-    private int[] toBeAddedRows = new int[2];
-    private int[] toBeAddedCols = new int[2];
+    private int[] toBeAddedRows = new int[1000];
+    private int[] toBeAddedCols = new int[1000];
     private int[] toBeRemovedRow = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
     private int[] toBeRemovedCol = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
     private Timer imageTimer;
@@ -223,6 +227,21 @@ public class InARow3 extends JPanel implements ActionListener {
         imageButtons[row1][col1] = imageButtons[row2][col2];
         imageButtons[row2][col2] = swap;
         computerMove();
+        boolean isFull = true;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (imageButtons[i][j].getText().equals("")) {
+                    isFull = false;
+                    break;
+                }
+            }
+            if (!isFull) {
+                break;
+            }
+        }
+        if (isFull) {
+            EndGameDialog.showEndGameDialog(frame, String.valueOf(score));
+        }
         checkXaxis();
         checkYaxis();
         refreshUI();
@@ -235,12 +254,19 @@ public class InARow3 extends JPanel implements ActionListener {
      */
     public void computerMove() {
         int newImage; 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < moveAmount; i++) {
             do {
                 newImage = rand.nextInt(100);
             } while (takenPositions[newImage]);
             toBeAddedRows[i] = newImage / 10;
             toBeAddedCols[i] = newImage % 10;
+        }
+        if (GameLevelDialog.difficulty == "easy") {
+            moveAmount++;
+        } else if (GameLevelDialog.difficulty == "medium") {
+            moveAmount += 2;
+        } else {
+            moveAmount += 3;
         }
         createButtons(toBeAddedRows, toBeAddedCols, false);
     }
@@ -271,6 +297,7 @@ public class InARow3 extends JPanel implements ActionListener {
                                 toBeRemovedRow[t] = -1;
                                 toBeRemovedCol[t] = -1;
                             }
+                            score += count;
                             count = 0;
                         }
                         
@@ -299,6 +326,7 @@ public class InARow3 extends JPanel implements ActionListener {
                     toBeRemovedRow[t] = -1;
                     toBeRemovedCol[t] = -1;
                 }
+                score += count;
                 count = 0;
             }
             lastImage = "";
@@ -335,6 +363,7 @@ public class InARow3 extends JPanel implements ActionListener {
                                 toBeRemovedCol[t] = -1;
                             }
                             count = 0;
+                            
                         }
                         
                         if (!imageButtons[i][j].getText().equals("")) {
@@ -354,9 +383,8 @@ public class InARow3 extends JPanel implements ActionListener {
             }
             if (count >= 3) {
                 for (int t = 9; t >= 9 - count + 1; t--) {
-                    toBeRemovedRow[t] = t;
-                    toBeRemovedCol[t] = i;
-                    System.out.println(t + " " + i);
+                    toBeRemovedRow[t] = i;
+                    toBeRemovedCol[t] = t;
                 }
                 removeButtons(toBeRemovedRow, toBeRemovedCol);
                 for (int t = 0; t < 10; t++) {
@@ -377,14 +405,12 @@ public class InARow3 extends JPanel implements ActionListener {
     public void removeButtons(int[] toBeRemovedRow, int[] toBeRemovedCol) {
         JButton imageButton = new JButton();
 
-        FreedomDialog.showFreedomDialog(frame);
+        final JDialog freeDialog = FreedomDialog.showFreedomDialog(frame);
 
         imageTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Hide the image after 1 second
-
-                imageTimer.stop();
+                freeDialog.dispose();
             }
         });
 
@@ -407,13 +433,7 @@ public class InARow3 extends JPanel implements ActionListener {
                 }
             }
         }
-    }
-
-    // public int[][] checkYaxis(int currentRow) {
-    //     int[][] toBeRemoved = new int[2][];
-
-    //     return toBeRemoved;
-    // } 
+    } 
 
     /**
      *.
@@ -421,7 +441,7 @@ public class InARow3 extends JPanel implements ActionListener {
     public void refreshUI() {
         this.removeAll();
 
-        System.out.println("NEW UI");
+        // System.out.println("NEW UI");
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 // if (!imageButtons[row][col].getText().equals("")) {
@@ -445,7 +465,6 @@ public class InARow3 extends JPanel implements ActionListener {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         StartGameDialog.showStartGameDialog(frame);
-        EndGameDialog.showEndGameDialog(frame);
     }
 
     public static void main(String[] args) {

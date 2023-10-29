@@ -21,6 +21,8 @@ public class GameLevelDialog {
      * Create the game level dialog, which is a pop-up screen, showing three buttons
      * to choose the level of difficulty you want to play the game in.
      */
+
+    public static String difficulty;
     static JDialog showGameLevelDialog(JFrame frame) {
 
         final JDialog gameLevelDialog = new JDialog(frame, "Game level");
@@ -33,6 +35,7 @@ public class GameLevelDialog {
         level1Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { 
+                difficulty = "easy";
                 gameLevelDialog.dispose();
             }
         });
@@ -46,6 +49,7 @@ public class GameLevelDialog {
             @Override
             public void actionPerformed(ActionEvent e) { 
                 gameLevelDialog.dispose();
+                difficulty = "medium";
             }
         });
 
@@ -58,6 +62,7 @@ public class GameLevelDialog {
             @Override
             public void actionPerformed(ActionEvent e) { 
                 gameLevelDialog.dispose();
+                difficulty = "hard";
             }
         });
     
@@ -82,9 +87,10 @@ public class GameLevelDialog {
         gameLevelDialog.add(panelButtons, BorderLayout.SOUTH);
 
         // Set the size of the dialog and add it to the main frame.
-        gameLevelDialog.setVisible(true);
         gameLevelDialog.setSize(265, 100);
         gameLevelDialog.setLocationRelativeTo(frame);
+        gameLevelDialog.setModal(true);
+        gameLevelDialog.setVisible(true);
         return gameLevelDialog;
     } 
 }
