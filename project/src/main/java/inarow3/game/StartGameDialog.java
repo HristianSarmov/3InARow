@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 /**.
  * @author Fleur Petit
@@ -35,8 +36,8 @@ public class StartGameDialog {
         startGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { 
-                GameRulesDialog.showGameRulesDialog(frame);
                 startGameDialog.dispose();
+                GameRulesDialog.showGameRulesDialog(frame);
             }
         });
 
@@ -61,8 +62,18 @@ public class StartGameDialog {
         // Add both panels to the dialog.
         startGameDialog.add(panelStartGame, BorderLayout.CENTER);
         startGameDialog.add(startGameButton, BorderLayout.SOUTH);
+        
+        // A new panel is created to add a write border around the dialog.
+        JPanel borderSGPanel = new JPanel(new BorderLayout());
+        borderSGPanel.setBorder(new EmptyBorder(3, 3, 3, 3));
+        borderSGPanel.setBackground(Color.WHITE);
 
+        borderSGPanel.add(panelStartGame, BorderLayout.CENTER);
+        borderSGPanel.add(startGameButton, BorderLayout.SOUTH);
+
+        startGameDialog.add(borderSGPanel, BorderLayout.CENTER);
         // Set the size of the dialog and add it to the main frame.
+        startGameDialog.setUndecorated(true);
         startGameDialog.setSize(265, 265);
         startGameDialog.setLocationRelativeTo(frame);
         startGameDialog.setModal(true);
